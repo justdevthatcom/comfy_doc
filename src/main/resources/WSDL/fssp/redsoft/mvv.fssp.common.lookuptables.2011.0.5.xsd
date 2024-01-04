@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.red-soft.biz/schemas/fssp/common/2011/0.5" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.red-soft.biz/schemas/fssp/common/2011/0.5" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xsd:include schemaLocation="biz.redsoft.mvv.fssp.common.datatypes.2011.0.5.xsd"/>
+	<xsd:complexType name="OspProperty">
+		<xsd:annotation>
+			<xsd:documentation>тип данных "Отдел СП"</xsd:documentation>
+			<xsd:documentation>тип данных "Отдел СП" используется для передачи данных справочника "Отделы судебных приставов". Содержит сведения о расчётном счёте отдела СП</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InternalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор объекта, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OspCode" type="tns:VkspType">
+				<xsd:annotation>
+					<xsd:documentation>код отдела СП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BeginDate" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата начала действия</xsd:documentation>
+					<xsd:documentation>дата начала действия реквизитов, Неуказанное значение сигнализирует о том, что реквизиты действуют на момент ответа на запрос</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EndDate" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата окончания действия</xsd:documentation>
+					<xsd:documentation>дата окончания действия реквизитов. Неуказанное значение сигнализирует о том, что срок окончения действия реквизитов неизвестен</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivName" type="tns:String_1_1000">
+				<xsd:annotation>
+					<xsd:documentation>наименование подразделения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivFullName" type="tns:String_1_1000">
+				<xsd:annotation>
+					<xsd:documentation>полное наименование подразделения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivHeadName" type="tns:FullFioType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>руководитель</xsd:documentation>
+					<xsd:documentation>ФИО руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivHeadPostName" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>должность руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivDeputyHeadName" type="tns:FullFioType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>заместитель руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivDeputyHeadPostName" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>должность заместитель руководителя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivAdr" type="tns:String_1_300" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>адрес юридический</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivEmail" type="tns:EMailType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>адрес электронной почты</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivTel" type="tns:TelephoneNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>телефон ССП</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivTelReception" type="tns:TelephoneNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>телефон приемной</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivFax" type="tns:TelephoneNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>факс</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivOfficeHours" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>часы работы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DivReceptionHours" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>часы приема</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpName" type="tns:String_1_160" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>наименование ОСП для платежей</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpAdr" type="tns:String_1_200" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>адрес получателя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpBank" type="tns:String_1_80" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>банк получателя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpBIK" type="tns:BikType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>БИК банка получателя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpCnt" type="tns:String_1_20" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>расчетный счет</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpINN" type="tns:CompanyInnType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ИНН получателя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecpKPP" type="tns:KppType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>КПП получателя</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OKATO" type="tns:OkatoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код ОКАТО</xsd:documentation>
+					<xsd:documentation>является необязательным для заполнения с 2014 года</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OKTMO" type="tns:OktmoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ОКТМО</xsd:documentation>
+					<xsd:documentation>является необязательным для заполнения с 2014 года</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Address" type="tns:String_1_300" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>адрес подразделения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Details" type="tns:OspDetail" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>сведения об отделе</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OspDetail">
+		<xsd:annotation>
+			<xsd:documentation>тип данных "Сведения об отделе судебных приставов"</xsd:documentation>
+			<xsd:documentation>тип данных "Сведения об отделе судебных приставов" используется для передачи дополнительных сведений об отделе судебных приставов</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="Priority" type="tns:PositiveShort">
+				<xsd:annotation>
+					<xsd:documentation>приоритет</xsd:documentation>
+					<xsd:documentation>допустимы значения 1 — 10</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OKATO" type="tns:OkatoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ОКАТО</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OKTMO" type="tns:OktmoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ОКТМО</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MinAmount" type="tns:Money" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>сумма от</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxAmount" type="tns:Money" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>сумма до</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IDType" type="tns:IdType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>тип ИД</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ClaimerType" type="tns:ContragentType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>тип органа, выдавшего ИД</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IdSubj" type="tns:IdSubjType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>тип предмета исполнения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DebtorType" type="tns:ContragentType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>тип должника</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="KladrStreet" type="tns:KladrCodeL2" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код КЛАДР улицы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Street" type="tns:String_1_60" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>название улицы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HouseNumber" type="tns:String_1_100" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дома</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="EvenHouse" type="tns:Boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>все четные дома</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="UnevenHouse" type="tns:Boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>все нечетные дома</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ReferenceDataType">
+		<xsd:annotation>
+			<xsd:documentation>тип данных "Данные справочника"</xsd:documentation>
+			<xsd:documentation>тип данных "Данные справочника" используется для передачи данных одного справочника в документе "Информация справочника"</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="referenceCode" type="tns:LookupTableType" minOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>код вида справочника</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="osp" type="tns:OspProperty">
+					<xsd:annotation>
+						<xsd:documentation>данные справочника ВКСП</xsd:documentation>
+						<xsd:documentation/>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

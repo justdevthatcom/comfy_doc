@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://www.red-soft.biz/schemas/fssp/common/2011/0.5" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://www.red-soft.biz/schemas/fssp/common/2011/0.5" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+	<xsd:include schemaLocation="biz.redsoft.mvv.fssp.common.datatypes.2011.0.5.xsd"/>
+	<xsd:include schemaLocation="biz.redsoft.mvv.fssp.common.datums.2011.0.5.xsd"/>
+	<xsd:include schemaLocation="biz.redsoft.mvv.fssp.common.lookuptables.2011.0.5.xsd"/>
+	<xsd:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xsd:element name="DebtRequest" type="tns:DebtRequest"/>
+	<xsd:complexType name="DebtRequest">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа  "Запрос реестра задолженности"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Запрос реестра задолженности" используется передачи серверу МВВ запроса на подготовку реестров задолженности к выгрузке контрагенту</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор АИС ВК</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор запроса, присвоенный АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsUpdate" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак запроса обновления</xsd:documentation>
+					<xsd:documentation>если в этом поле стоит false, то запрашивается реестр целиком</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LastUnloadDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата последнего реестра</xsd:documentation>
+					<xsd:documentation>дата последнего выгруженного обновления реестра задолженности, которое есть у платежной системы</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DueUnloadDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата, по которую запрашиваются реестры изменений</xsd:documentation>
+					<xsd:documentation>используются только при запросе изменений. При запросе полного реестра игнорируется</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MaxResultCount" type="tns:PositiveShort" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>максимальное количество реестров</xsd:documentation>
+					<xsd:documentation>используются только при запросе изменений. При запросе полного реестра игнорируется. Значение по умолчанию 17</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ToFrom" type="tns:VkspType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код территориального органа</xsd:documentation>
+					<xsd:documentation>если указан данный код, возвращаются только реестры для определенного региона</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SignDateTime" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата и время формирования подписи</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="Debt" type="tns:Debt"/>
+	<xsd:complexType name="Debt">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Реестр задолженности"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Реестр задолженности" используется для передачи контрагенту запрошенного ранее реестра задолженности</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InternalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор реестра, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RequestExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор запроса реестра, полученный ранее от АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ReeIDD" type="tns:DocNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>номер реестра долга</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsUpdate" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак обновления</xsd:documentation>
+					<xsd:documentation>устанавливается в true в случае, если файл данных это обновление, а не полная выгрузка данных</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="UnloadDate" type="tns:DateTime">
+				<xsd:annotation>
+					<xsd:documentation>дата выгрузки</xsd:documentation>
+					<xsd:documentation>дата актуальности выгруженных данных</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PrevDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата предыдущей выгрузки</xsd:documentation>
+					<xsd:documentation>дата предыдущей выгрузки данных. В случае если передается полная выгрузка данных не заполняется</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HasMoreDebt" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак наличия обновлений</xsd:documentation>
+					<xsd:documentation>устанавливается в true в случае, если это не последний реестр обновлений и существуют ещё данные</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DebtRecordCount" type="tns:Integer">
+				<xsd:annotation>
+					<xsd:documentation>количество записей реестра долга</xsd:documentation>
+					<xsd:documentation>количество записей о задолженности по ИП в файле долга. Нулевое количество обозначает, что система не может найти реестр долга, соответствующий условиям запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ToFrom" type="tns:VktoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код территориального отдела</xsd:documentation>
+					<xsd:documentation>код территориального органа, для которого сформирован реестр</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DebtDetail" type="xsd:base64Binary" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>реестр задолженности</xsd:documentation>
+					<xsd:documentation>данное поле не заполняется в случае, если система не может найти реестр, соответствующий условиям запроса. Описание формата реестра задолженности приведено в п.4.6.3. РП ВС</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SignDateTime" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата и время формирования подписи</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Id" type="tns:Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="RequestByDatum">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос данных по имеющимся сведениям"</xsd:documentation>
+			<xsd:documentation>тип данных "Запрос данных по имеющимся сведениям" является базовым для ряда документов, связанных с получением информации по исполнительному производству</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="externalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор документа, присвоенный АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="docDate" type="tns:Date">
+				<xsd:annotation>
+					<xsd:documentation>дата запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="docNumber" type="tns:DocNumberType">
+				<xsd:annotation>
+					<xsd:documentation>номер запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="authorName" type="tns:FioType">
+				<xsd:annotation>
+					<xsd:documentation>ФИО должностного лица</xsd:documentation>
+					<xsd:documentation>ФИО должностного лица, от имени которого направляется запрос</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="authorPost" type="tns:String_1_50">
+				<xsd:annotation>
+					<xsd:documentation>должность</xsd:documentation>
+					<xsd:documentation>наименование должности</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="data" type="tns:Data" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>сведения</xsd:documentation>
+					<xsd:documentation>тип данных "Сведения" используется в качестве контейнера для представления сведений о должнике, находящихся в составе документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="id" type="tns:Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="IPDataRequest" type="tns:IPDataRequest"/>
+	<xsd:complexType name="IPDataRequest">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос информации о наличии и реквизитах ИП"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Запрос информации о наличии и реквизитах ИП" предназначен представления запроса ведомства в ФССП России информации о наличии исполнительных производств</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:RequestByDatum">
+				<xsd:sequence>
+					<xsd:element name="IdSubj" type="tns:IdSubjType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>код предмета исполнения</xsd:documentation>
+							<xsd:documentation>Признак предназначен для дополнительного поиска по банку данных должников с учетом кода предмета исполнения. Значение согласно справочнику ЕСНСИ «Предмет исполнения ФССП России». Например: для поиска организаций и признаком «Административное приостановление деятельности» (IdSubj = 24)</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>ЭП</xsd:documentation>
+							<xsd:documentation>электронная подпись документа</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="IPDataInfo" type="tns:IPDataInfo"/>
+	<xsd:complexType name="IPDataInfo">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Информация об исполнительных производствах"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Информация об исполнительных производствах" используется для передачи ведомству соответствующей информации по ранее направленному запросу</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="internalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор сообщения, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>Идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор документа запроса АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ip" type="tns:IP" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ИП</xsd:documentation>
+					<xsd:documentation>тип данных "Исполнительное производство" используется для представления основных реквизитов исполнительного производства, находящихся в составе документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="data" type="tns:Data" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>сведения</xsd:documentation>
+					<xsd:documentation>тип данных "Сведения" используется в качестве контейнера для представления сведений о должнике, находящихся в составе документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Id" type="tns:Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="ReferenceInfoRequest" type="tns:ReferenceInfoRequest"/>
+	<xsd:complexType name="ReferenceInfoRequest">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос информации справочника"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Запрос информации справочника" используется для асинхронного запроса данных справочника у сервера МВВ</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="internalKey" type="tns:InternalKeyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>идентификатор объекта, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestExternalKey" type="tns:ExternalKeyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор запроса списка реквизитов ОСП, полученный ранее от АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="referenceCode" type="tns:LookupTableType">
+				<xsd:annotation>
+					<xsd:documentation>код вида справочника</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ReferenceInfo" type="tns:ReferenceInfo"/>
+	<xsd:complexType name="ReferenceInfo">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Информация справочника"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Информация справочника" используется для передачи ответа с данными справочника отправителю запроса данных справочника</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="internalKey" type="tns:InternalKeyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>идентификатор объекта, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestExternalKey" type="tns:ExternalKeyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор запроса списка реквизитов ОСП, полученный ранее от АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="referenceData" type="tns:ReferenceDataType">
+				<xsd:annotation>
+					<xsd:documentation>данные справочника</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="InvestigationRegistryQuery" type="tns:InvestigationRegistryQuery"/>
+	<xsd:complexType name="InvestigationRegistryQuery">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос в реестр розыска"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Запрос в реестр розыска" используется для передачи от ведомства субъекта России запроса в реестр розыска</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор АИС ВК</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор документа, присвоенный АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="tns:ContragentType">
+				<xsd:annotation>
+					<xsd:documentation>тип разыскиваемого лица</xsd:documentation>
+					<xsd:documentation>указывается тип разыскиваемого лица, либо лица, чье имущество разыскивается</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InvFio" type="tns:FioType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ФИО разыскиваемого лица</xsd:documentation>
+					<xsd:documentation>указывается разыскиваемое лицо (Ф.И.О. гражданина, ребёнка), либо лицо, чье имущество разыскивается. Допустимо заполнение только одного из полей "ФИО разыскиваемого лица" или "Наименование организации"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InvName" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>наименование организации</xsd:documentation>
+					<xsd:documentation>указывается разыскиваемая организация (наименование организации), либо организация, чье имущество разыскивается. Допустимо заполнение только одного из полей "ФИО разыскиваемого лица" или "Наименование организации"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BirthDate" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата рождения</xsd:documentation>
+					<xsd:documentation>указывается дата рождения разыскиваемого лица либо гражданина, чье имущество разыскивается, если известна</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BirthYear" type="tns:Year" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>год рождения</xsd:documentation>
+					<xsd:documentation>указывается год рождения разыскиваемого лица либо гражданина, чье имущество разыскивается, если известен</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="INN" type="tns:CompanyInnType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ИНН организации</xsd:documentation>
+					<xsd:documentation>указывается ИНН разыскиваемой организации либо организации, чье имущество разыскивается. Поле обязательное для заполнения, если тип разыскиваемого лица — юридическое лицо</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IPNumber" type="tns:DocNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>номер ИП</xsd:documentation>
+					<xsd:documentation>указывается номер ИП. Используется для поиска розыскного дела в реестре розыска</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Aliment" type="tns:Boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>алиментные обязательства</xsd:documentation>
+					<xsd:documentation>признак поиска разыскиваемого лица, являющегося должником по алиментным обязательствам. Если признак отсутствует в схеме, то по умолчанию принимает значение "true"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:element name="InvestigationRegistryInfo" type="tns:InvestigationRegistryInfo"/>
+	<xsd:complexType name="InvestigationRegistryInfo">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Выписка из реестра розыска"</xsd:documentation>
+			<xsd:documentation>тип данных документа "Выписка из реестра розыска" используется для передачи ведомству субъекта России имеющихся данных из реестра розыска</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InternalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор документа, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="QueryExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор запроса (значение поля ExternalKey), переданного ранее в ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Type" type="tns:ContragentType">
+				<xsd:annotation>
+					<xsd:documentation>тип разыскиваемого лица</xsd:documentation>
+					<xsd:documentation>указывается тип разыскиваемого лица, либо лица, чье имущество разыскивается</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InvFio" type="tns:FioType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ФИО разыскиваемого лица</xsd:documentation>
+					<xsd:documentation>указывается разыскиваемое лицо (Ф.И.О. гражданина, ребёнка), либо лицо, чье имущество разыскивается. Допустимо заполнение только одного из полей "ФИО разыскиваемого лица" или "Наименование организации"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InvName" type="tns:String_1_1000" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>наименование организации</xsd:documentation>
+					<xsd:documentation>указывается разыскиваемая организация (наименование организации), либо организация, чье имущество разыскивается. Допустимо заполнение только одного из полей "ФИО разыскиваемого лица" или "Наименование организации"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BirthDate" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата рождения</xsd:documentation>
+					<xsd:documentation>указывается дата рождения разыскиваемого лица либо гражданина, чье имущество разыскивается, если известна</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BirthYear" type="tns:Year" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>год рождения</xsd:documentation>
+					<xsd:documentation>указывается год рождения разыскиваемого лица либо гражданина, чье имущество разыскивается, если известен</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="INN" type="tns:CompanyInnType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ИНН организации</xsd:documentation>
+					<xsd:documentation>указывается ИНН должника. Поле обязательное для заполнения, если тип разыскиваемого лица — юридическое лицо</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IPNumber" type="tns:DocNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>номер ИП</xsd:documentation>
+					<xsd:documentation>указывается номер ИП, в рамках которого возбуждено розыскное дело</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Detail" type="tns:InvestigationRegistryDetail" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>состав выписки</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="InvestigationRegistryDetail">
+		<xsd:annotation>
+			<xsd:documentation>тип данных "Строка выписки из реестра розыска"</xsd:documentation>
+			<xsd:documentation>тип данных "Строка выписки из реестра розыска" применяется для передачи информации о розыскном деле</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="IssueDate" type="tns:Date">
+				<xsd:annotation>
+					<xsd:documentation>дата заведения розыскного дела</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IssueNumber" type="tns:DocNumberType">
+				<xsd:annotation>
+					<xsd:documentation>номер розыскного дела</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsDurationOverMonth" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>срок нахождения в реестре больше месяца</xsd:documentation>
+					<xsd:documentation>признак устанавливается в активное состояние, если с момента загрузки розыскного дела в реестр розыска прошло больше месяца</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="invCategory" type="tns:InvestigationCategoryType">
+				<xsd:annotation>
+					<xsd:documentation>категория розыска</xsd:documentation>
+					<xsd:documentation>указывается тип розыскного дела (должник-организация, имущество должника-организации, должник-физическое лицо, имущество должника-физического лица, ребёнок)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="BKIRequest" type="tns:BKIRequest"/>
+	<xsd:complexType name="BKIRequest">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос сведений из банка данных для БКИ"</xsd:documentation>
+			<xsd:documentation>данный документ используется передачи серверу МВВ запроса на подготовку сведений из банка данных к выгрузке в Бюро кредитных историй</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор АИС ВК</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор запроса, присвоенный АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsUpdate" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак запроса обновления</xsd:documentation>
+					<xsd:documentation>признак запроса обновления. Если в этом поле стоит false, то запрашивается реестр целиком</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LastUnloadDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата последнего реестра</xsd:documentation>
+					<xsd:documentation>дата последнего выгруженного обновления реестра задолженности ФССП России, которое есть у Бюро кредитных историй</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DueUnloadDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата, по которую запрашиваются реестры изменений</xsd:documentation>
+					<xsd:documentation>используются только при запросе изменений. При запросе полного реестра задолженности ФССП России игнорируется</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ToFrom" type="tns:VktoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код территориального органа</xsd:documentation>
+					<xsd:documentation>если поле заполнено, возвращается реестр ФССП России по указанному региону</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="BKIResponse" type="tns:BKIResponse"/>
+	<xsd:complexType name="BKIResponse">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Сведения из банка данных для БКИ"</xsd:documentation>
+			<xsd:documentation>используется для передачи Бюро кредитных историй запрошенных ранее сведений из банка данных</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="InternalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор реестра, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RequestExternalKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор запроса реестра, полученный ранее от АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="IsUpdate" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак обновления</xsd:documentation>
+					<xsd:documentation>устанавливается в true в случае если файл данных это обновление, а не полная выгрузка данных</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="UnloadDate" type="tns:DateTime">
+				<xsd:annotation>
+					<xsd:documentation>дата выгрузки</xsd:documentation>
+					<xsd:documentation>дата актуальности выгруженных данных</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PrevDate" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата предыдущей выгрузки</xsd:documentation>
+					<xsd:documentation>дата предыдущей выгрузки данных. В случае если передается полная выгрузка данных не заполняется</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HasMoreDebt" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак наличия обновлений</xsd:documentation>
+					<xsd:documentation>устанавливается в true в случае, если это не последний реестр обновлений и существуют ещё данные</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DebtRecordCount" type="tns:Integer">
+				<xsd:annotation>
+					<xsd:documentation>количество записей реестра долга</xsd:documentation>
+					<xsd:documentation>количество записей о задолженности по ИП в файле долга. Нулевое количество обозначает, что система не может найти реестр задолженности ФССП России, соответствующий условиям запроса для конкретного Бюро кредитных историй</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ToFrom" type="tns:VktoType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код территориального органа</xsd:documentation>
+					<xsd:documentation>код территориального органа, для которого сформирован реестр задолженности ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DebtDetail" type="xsd:base64Binary" minOccurs="0" xmime:expectedContentTypes="application/zip">
+				<xsd:annotation>
+					<xsd:documentation>реестр задолженности для БКИ</xsd:documentation>
+					<xsd:documentation>в элементе передаются данные в Base64. Данное поле не заполняется в случае, если система не может найти реестр задолженности ФССП России, соответствующий условиям запроса</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="ExitRestrictionActRequest" type="tns:ExitRestrictionActRequest"/>
+	<xsd:complexType name="ExitRestrictionActRequest">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Запрос постановления об ограничении выезда"</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:RequestByDatum">
+				<xsd:sequence>
+					<xsd:element name="SignDateTime" type="tns:DateTime" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>дата и время формирования подписи</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+						<xsd:annotation>
+							<xsd:documentation>ЭП</xsd:documentation>
+							<xsd:documentation>электронная подпись документа</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="ExitRestrictionActInfo" type="tns:ExitRestrictionActInfo"/>
+	<xsd:complexType name="ExitRestrictionActInfo">
+		<xsd:annotation>
+			<xsd:documentation>тип данных документа "Сведения о наличии постановления об ограничении выезда"</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="internalKey" type="tns:InternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>ключ ФССП России</xsd:documentation>
+					<xsd:documentation>уникальный идентификатор документа, присвоенный АИС ФССП России</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="requestKey" type="tns:ExternalKeyType">
+				<xsd:annotation>
+					<xsd:documentation>идентификатор запроса АИС ВК</xsd:documentation>
+					<xsd:documentation>идентификатор документа запроса АИС внешнего контрагента</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isActExists" type="tns:Boolean">
+				<xsd:annotation>
+					<xsd:documentation>признак наличия постановления</xsd:documentation>
+					<xsd:documentation>признак наличия постановления об ограничении выезда</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="docDate" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата постановления</xsd:documentation>
+					<xsd:documentation>заполняется при наличии постановления</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="docNumber" type="tns:DocNumberType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>номер постановления</xsd:documentation>
+					<xsd:documentation>заполняется при наличии постановления</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="term" type="tns:Date" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>срок действия</xsd:documentation>
+					<xsd:documentation>срок действия постановления об ограничении (включительно). Заполняется при наличии срока действия в постановлении. Если срок действия в постановлении отсутствует, то постановление является бессрочным, т.е. является действующим до явного снятия ограничения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="spiKey" type="tns:InternalKeyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код СПИ</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="spiName" type="tns:FullFioType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ФИО СПИ</xsd:documentation>
+					<xsd:documentation>ФИО СПИ, выдавшего постановление. Заполняется при наличии постановления</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="spiPostCode" type="tns:PostType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код должности СПИ</xsd:documentation>
+					<xsd:documentation>заполняется при наличии постановления</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="spiPostName" type="tns:String_1_50" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>наименование должности СПИ</xsd:documentation>
+					<xsd:documentation>заполняется при наличии постановления</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="docCode" type="tns:DocumentType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>код документа</xsd:documentation>
+					<xsd:documentation>значение согласно справочнику ЕСНСИ "Форматы электронных документов, обрабатываемых в ФССП России"</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="reason" type="tns:String_1_300" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>основание решения СПИ</xsd:documentation>
+					<xsd:documentation>текст основания принятия решения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="article" type="tns:String_1_10" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>статья</xsd:documentation>
+					<xsd:documentation>статья основания решения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="point" type="tns:String_1_10" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>пункт статьи</xsd:documentation>
+					<xsd:documentation>пункт статьи основания решения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="part" type="tns:String_1_10" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>подпункт</xsd:documentation>
+					<xsd:documentation>подпункт статьи основания решения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ip" type="tns:IP" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>ИП</xsd:documentation>
+					<xsd:documentation>составной тип данных "Исполнительное производство" (IP). Содержит основные сведения об исполнительном производстве и должнике</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="data" type="tns:Data" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>сведения</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SignDateTime" type="tns:DateTime" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>дата и время формирования подписи</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="ds:Signature" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>ЭП</xsd:documentation>
+					<xsd:documentation>электронная подпись документа</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Id" type="tns:Id">
+			<xsd:annotation>
+				<xsd:documentation>атрибут документа</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>
